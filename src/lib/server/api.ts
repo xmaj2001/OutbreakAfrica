@@ -18,8 +18,8 @@ export async function fetchWorker<T>(
   }
 
   const res = await fetch(url.toString(), {
-    // Next.js cache — revalida a cada 1 hora
-    next: { revalidate: 3600 },
+    // // Next.js cache — revalida a cada 1 hora
+    // next: { revalidate: 3600 },
   });
 
   if (!res.ok) {

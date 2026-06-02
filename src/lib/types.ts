@@ -155,9 +155,100 @@ export interface DisastersParams {
 }
 
 // ============================================================
+// /stats — dados agregados para o dashboard
+// ============================================================
+
+export interface DiseaseCount {
+  name: string;
+  count: number;
+}
+
+export interface TimelinePoint {
+  label: string;
+  count: number;
+}
+
+export interface OutbreakStats {
+  activeOutbreaks: number;
+  affectedCountries: number;
+  totalReports: number;
+  topDisease: DiseaseCount | null;
+  topDiseases: DiseaseCount[];
+  timeline: TimelinePoint[];
+}
+
+export interface StatsParams {
+  country?: string;
+}
+
+// ============================================================
 // Erro genérico
 // ============================================================
 
 export interface ApiError {
   error: string;
+}
+
+// ============================================================
+// /stats — parâmetros completos
+// ============================================================
+
+export interface StatsParams {
+  country?: string; // ISO3 separados por vírgula: "ago,cod"
+  disease?: string; // nomes separados por vírgula: "Cholera,Ebola"
+  source?: string; // shortnames: "WHO,MSF"
+  year_from?: string; // "2020"
+  year_to?: string; // "2025"
+  status?: "ongoing" | "past";
+  interval?: "year" | "month";
+}
+
+// ── Facet items ───────────────────────────────────────────────────────────────
+
+export interface FacetItem {
+  value: string;
+  count: number;
+}
+
+export interface TimelineFacetItem {
+  value: string; // ISO date: "2020-01-01T00:00:00+00:00"
+  epoch_ms: number; // timestamp em ms — útil para gráficos
+  count: number;
+}
+
+// status vindo do /disasters — pode ter "alert-archive" além de "ongoing" | "past"
+export type DisasterStatus = "ongoing" | "past" | "alert-archive";
+
+export interface StatusFacetItem {
+  value: DisasterStatus;
+  count: number;
+}
+
+// ── Facet containers ──────────────────────────────────────────────────────────
+
+export interface FacetData<T extends FacetItem = FacetItem> {
+  type: "term" | "date";
+  data: T[];
+  missing: number;
+  more: boolean;
+}
+
+// ── Resposta completa ─────────────────────────────────────────────────────────
+
+export interface StatsResponse {
+  time: number;
+  href: string;
+  took: number;
+  totalCount: number; // total de relatórios — card "Relatórios"
+  count: number; // sempre 0 (limit=0)
+  data: [];
+  embedded: {
+    facets: {
+      countries: FacetData<FacetItem>; // ISO3 + count
+      diseases: FacetData<FacetItem>; // nome do surto + count
+      timeline: FacetData<TimelineFacetItem>; // data + epoch_ms + count
+      sources: FacetData<FacetItem>; // shortname + count
+      status: FacetData<StatusFacetItem>; // ongoing | past | alert-archive
+    };
+  };
 }

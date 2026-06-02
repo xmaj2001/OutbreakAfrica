@@ -176,7 +176,7 @@ export function AfricaMap({
       )}
 
       {/* Legenda */}
-      <div className="absolute top-4 left-4 flex flex-col gap-1.5 text-xs text-slate-400">
+      <div className="absolute top-4 right-4 flex flex-col gap-1.5 text-xs text-slate-400">
         <div className="flex items-center gap-2">
           <span className="w-3 h-3 rounded-sm bg-[#f4a261]" />
           Surto activo
