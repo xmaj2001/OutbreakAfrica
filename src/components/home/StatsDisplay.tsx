@@ -338,7 +338,7 @@ export function AffectedCountries({
         Países afetados
       </h2>
       <div className="text-4xl md:text-5xl tracking-normal font-mono tabular-nums">
-        {formatNumber(useOldAnimatedNumber(countries, 4000))}
+        {formatNumber(useOldAnimatedNumber(countries, 1000))}
       </div>
       <h3>Relatórios</h3>
       <div className="text-sm text-gray-900 font-mono tabular-nums">
