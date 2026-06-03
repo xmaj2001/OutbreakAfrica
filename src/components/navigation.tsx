@@ -46,7 +46,7 @@ export function Navigation() {
         >
           {/* Logo */}
           <a href="/" className="flex items-center gap-2 group">
-            <Image src="/images/logo.png" alt="Qcena" width={25} height={25} />
+            <Image src="/logo_white.png" alt="Qcena" width={25} height={25} />
             <span
               className={`font-display tracking-tight transition-all duration-500 ${isScrolled ? "text-xl text-foreground" : "text-2xl text-white"}`}
             >
@@ -86,7 +86,7 @@ export function Navigation() {
               size="sm"
               className={`rounded-full transition-all duration-500 ${isScrolled ? "bg-foreground hover:bg-foreground/90 text-background px-4 h-8 text-xs" : "bg-white hover:bg-white/90 text-black px-6"}`}
             >
-              My Portfolio
+              Exportar Dados
             </Button>
           </div>
 

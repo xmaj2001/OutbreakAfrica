@@ -81,9 +81,7 @@ export default async function Home({ searchParams }: HomeProps) {
           </div>
         </div>
 
-        <section className="mt-8">
-          <StatsGrid />
-        </section>
+        <section className="mt-8">{/* <StatsGrid /> */}</section>
       </div>
     </main>
   );
