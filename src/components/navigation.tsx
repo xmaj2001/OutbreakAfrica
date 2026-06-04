@@ -8,10 +8,9 @@ import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { name: "Home", href: "/" },
-  { name: "Buscar Serviços", href: "/search" },
-  { name: "Sobre", href: "/about" },
-  { name: "Baixe o App", href: "/app" },
-  { name: "Contacto", href: "/contact" },
+  { name: "Feeds", href: "/feeds" },
+  { name: "Compare", href: "#compare" },
+  { name: "About", href: "#about" },
 ];
 
 export function Navigation() {
@@ -35,7 +34,7 @@ export function Navigation() {
       <nav
         className={`mx-auto transition-all duration-500 ${
           isScrolled || isMobileMenuOpen
-            ? "bg-background/80 backdrop-blur-xl border border-foreground/10 rounded-2xl shadow-lg max-w-[1200px]"
+            ? "bg-background/80 backdrop-blur-xl border border-foreground/10 rounded-sm shadow-lg max-w-[1200px]"
             : "bg-transparent max-w-[1400px]"
         }`}
       >
@@ -60,11 +59,11 @@ export function Navigation() {
               <a
                 key={link.name}
                 href={link.href}
-                className={`text-sm transition-colors duration-300 relative group ${isScrolled ? "text-foreground/70 hover:text-foreground" : "text-white/70 hover:text-white"}`}
+                className={`text-sm transition-colors duration-300 relative group ${isScrolled ? "text-foreground/70 hover:text-red-500" : "text-white/70 hover:text-red-500"}`}
               >
                 {link.name}
                 <span
-                  className={`absolute -bottom-1 left-0 w-0 h-px transition-all duration-300 group-hover:w-full ${isScrolled ? "bg-foreground" : "bg-white"}`}
+                  className={`absolute -bottom-1 left-0 w-0 h-px transition-all duration-300 group-hover:w-full ${isScrolled ? "bg-foreground" : "bg-red-500"}`}
                 />
               </a>
             ))}
@@ -84,7 +83,7 @@ export function Navigation() {
             <Button
               onClick={() => window.open("https://x-maj.vercel.app")}
               size="sm"
-              className={`rounded-full transition-all duration-500 ${isScrolled ? "bg-foreground hover:bg-foreground/90 text-background px-4 h-8 text-xs" : "bg-white hover:bg-white/90 text-black px-6"}`}
+              className={`rounded-full transition-all duration-500 ${isScrolled ? "bg-red-500 hover:bg-red-500/90 text-white px-4 h-8 text-xs" : "bg-red-500 hover:bg-red-500/90 text-white px-6"}`}
             >
               Exportar Dados
             </Button>
@@ -122,7 +121,7 @@ export function Navigation() {
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`text-5xl font-display text-foreground hover:text-muted-foreground transition-all duration-500 ${
+                className={`text-5xl font-display text-foreground hover:text-red-500 transition-all duration-500 ${
                   isMobileMenuOpen
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-4"
@@ -153,10 +152,10 @@ export function Navigation() {
               Github
             </Button>
             <Button
-              className="flex-1 bg-foreground text-background rounded-full h-14 text-base"
+              className="flex-1 bg-red-500 hover:bg-red-500/90 text-white rounded-full h-14 text-base"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              My CV
+              Data Export
             </Button>
           </div>
         </div>

@@ -1,94 +1,65 @@
-"use client";
+import { Globe } from "lucide-react";
+import { searchReports } from "@/lib/server/features/search-reports";
+import FeedItem from "./feed-item";
+import FeedPagination from "./feed-pagination";
 
-import { useEffect, useRef } from "react";
-import { ReportCard } from "./report-card";
-import { useFeed } from "@/hooks/use-feed";
-import type { SearchParams } from "@/lib/types";
+const LIMIT = 20;
 
-interface Props {
-  filters: Omit<SearchParams, "limit" | "offset">;
+interface FeedListProps {
+  page: number;
+  country?: string;
+  disease?: string;
+  source?: string;
+  year?: string;
+  status?: "ongoing" | "past";
 }
 
-export function FeedList({ filters }: Props) {
-  const { items, isLoading, isError, hasMore, total, loadMore } =
-    useFeed(filters);
-  const sentinelRef = useRef<HTMLDivElement>(null);
+export default async function FeedList({
+  page,
+  country,
+  disease,
+  source,
+  year,
+  status,
+}: FeedListProps) {
+  const offset = (page - 1) * LIMIT;
 
-  // Intersection Observer para infinite scroll
-  useEffect(() => {
-    const el = sentinelRef.current;
-    if (!el) return;
+  const res = await searchReports({
+    limit: LIMIT,
+    offset,
+    country,
+    disease,
+    source,
+    year,
+    status,
+  });
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore && !isLoading) {
-          loadMore();
-        }
-      },
-      { rootMargin: "200px" },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [hasMore, isLoading, loadMore]);
-
-  if (isError) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
-        <p>Erro ao carregar relatórios.</p>
-        <button
-          onClick={() => window.location.reload()}
-          className="mt-3 text-sm underline"
-        >
-          Tentar novamente
-        </button>
-      </div>
-    );
-  }
+  const totalPages = Math.ceil(res.totalCount / LIMIT);
 
   return (
-    <div className="flex flex-col gap-3">
-      {/* Contador */}
-      {total !== null && (
-        <p className="text-xs text-muted-foreground">
-          {total.toLocaleString("pt-PT")} relatórios encontrados
-        </p>
-      )}
+    <div className="space-y-4">
+      <span className="text-[10px] text-slate-500 font-mono">
+        {res.totalCount.toLocaleString()} resultados — página {page} de{" "}
+        {totalPages}
+      </span>
 
-      {/* Cards */}
-      {items.map((report) => (
-        <ReportCard key={report.id} report={report} />
-      ))}
-
-      {/* Skeleton enquanto carrega */}
-      {isLoading && (
-        <div className="flex flex-col gap-3">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div
-              key={i}
-              className="h-28 rounded-lg border border-border bg-muted animate-pulse"
-            />
-          ))}
+      {res.data.length === 0 ? (
+        <div className="flex flex-col items-center justify-center p-12 text-center rounded-xl bg-bento-card border border-bento-border">
+          <Globe className="h-10 w-10 text-slate-600 mb-3" />
+          <h4 className="text-sm font-semibold text-slate-300 uppercase tracking-wider font-mono">
+            Sem Boletins
+          </h4>
+          <p className="text-xs text-slate-500 max-w-sm mt-1">
+            Nenhum registo localizado para os critérios seleccionados.
+          </p>
         </div>
+      ) : (
+        res.data.map((report) => <FeedItem key={report.id} report={report} />)
       )}
 
-      {/* Sem resultados */}
-      {!isLoading && items.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
-          <p>Nenhum relatório encontrado.</p>
-          <p className="text-xs mt-1">Tenta ajustar os filtros.</p>
-        </div>
+      {totalPages > 1 && (
+        <FeedPagination currentPage={page} totalPages={totalPages} />
       )}
-
-      {/* Fim da lista */}
-      {!hasMore && items.length > 0 && (
-        <p className="text-center text-xs text-muted-foreground py-6">
-          Fim dos resultados
-        </p>
-      )}
-
-      {/* Sentinel para o IntersectionObserver */}
-      <div ref={sentinelRef} className="h-1" />
     </div>
   );
 }

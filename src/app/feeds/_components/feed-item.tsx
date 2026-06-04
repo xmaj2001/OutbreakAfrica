@@ -2,9 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Calendar, Flame, MapPin } from "lucide-react";
+import type { SearchItem } from "@/lib/search.type";
+import { formatDate } from "@/lib/utils";
+import Link from "next/link";
 
 interface FeedItemProps {
-  report: any;
+  report: SearchItem;
   //   onSelectCountryIso: (iso3: string) => void;
 }
 
@@ -12,7 +15,7 @@ export default function FeedItem({
   report,
   //   onSelectCountryIso,
 }: FeedItemProps) {
-  const isOngoing = report.fields["disaster.status"] === "ongoing";
+  const isOngoing = report.fields.disaster?.[0]?.status === "ongoing";
 
   return (
     <motion.div
@@ -40,17 +43,17 @@ export default function FeedItem({
           <div className="flex items-center gap-2">
             <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-bento-inner text-bento-accent border border-bento-accent/20 font-mono font-bold">
               <Flame className="h-3 w-3 text-bento-accent" />
-              {report.fields["disaster_type.code"]}
+              {report.fields.disaster_type?.[0]?.code}
             </span>
             <span className="text-slate-400 font-semibold tracking-wide uppercase font-mono text-[9px]">
-              {report.fields["disaster_type.name"]}
+              {report.fields.disaster_type?.[0]?.name}
             </span>
           </div>
 
           {/* Report Date */}
           <div className="flex items-center gap-1.5 text-slate-500 font-mono">
             <Calendar className="h-3.5 w-3.5 text-slate-600" />
-            {report.fields["date.original"]}
+            {formatDate(report.fields.date.original)}
           </div>
         </div>
 
@@ -70,19 +73,23 @@ export default function FeedItem({
             className="flex items-center gap-1 text-slate-300 hover:text-bento-accent transition-colors bg-bento-inner px-2 py-1 rounded border border-bento-border cursor-pointer font-mono text-[10px]"
           >
             <MapPin className="h-3.5 w-3.5 text-bento-accent" />
-            {report.fields["primary_country.name"]} (
-            {report.fields["primary_country.iso3"]})
+            {report.fields.primary_country.name}
           </Button>
 
           {/* Source tag */}
-          <span className="text-slate-400 font-medium flex items-center gap-1">
+          <Link
+            href={`${report.fields.source?.[0]?.homepage}`}
+            target="_blank"
+            aria-label={`Página web da organização ${report.fields.source?.[0]?.name}`}
+            className="text-slate-400 font-medium flex items-center gap-1"
+          >
             <span className="text-[10px] font-mono text-slate-500 uppercase">
               FONTE:
             </span>
             <span className="bg-bento-inner px-2 py-1 rounded border border-bento-border text-slate-300 font-mono text-[10px]">
-              {report.fields["source.shortname"]}
+              {report.fields.source?.[0]?.shortname}
             </span>
-          </span>
+          </Link>
 
           {/* Status badge */}
           <span
