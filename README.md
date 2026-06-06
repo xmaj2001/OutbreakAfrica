@@ -103,7 +103,7 @@ Aceda a `http://localhost:3000` no seu navegador.
 ### Configuração do Cloudflare Worker
 
 1. Crie um novo Worker na [Dashboard Cloudflare](https://dash.cloudflare.com/)
-2. Deploy do Worker (ver instruções em `/worker`)
+2. Deploy do Worker (ver instruções em `/src/worker`)
 3. Configure a URL do Worker nas variáveis de ambiente
 
 ```env
@@ -114,23 +114,39 @@ NEXT_PUBLIC_WORKER_URL=https://seu-worker.seu-dominio.workers.dev
 
 ```
 OutbreakAfrica/
-├── app/                    # Next.js App Router
-│   ├── page.tsx           # Página inicial
-│   ├── api/               # API Routes
-│   └── [country]/         # Páginas dinâmicas por país
-├── components/            # Componentes React
-├── lib/                   # Utilitários e helpers
-├── public/                # Arquivos estáticos
-├── worker/                # Cloudflare Worker code
-├── styles/                # CSS
-└── .env.local            # Variáveis de ambiente
+├── src/
+│   ├── app/                   # Next.js App Router
+│   │   ├── page.tsx          # Página inicial
+│   │   ├── layout.tsx        # Layout raiz
+│   │   └── api/              # API Routes
+│   ├── components/           # Componentes React reutilizáveis
+│   ├── hooks/                # React Hooks customizados
+│   └── lib/                  # Utilitários, helpers e funções
+├── public/                   # Arquivos estáticos
+├── .preview/                 # Ficheiros de preview/demo
+├── biome.json               # Configuração do Biome (linter + formatter)
+├── components.json          # Configuração do shadcn/ui
+├── next.config.ts           # Configuração do Next.js
+├── tsconfig.json            # Configuração do TypeScript
+├── postcss.config.mjs        # Configuração do PostCSS
+├── package.json             # Dependências do projeto
+└── README.md                # Este ficheiro
 ```
+
+### Descrição das Pastas
+
+- **`src/app/`** — Estrutura de rotas do Next.js (App Router). Cada pasta/ficheiro é uma rota.
+- **`src/components/`** — Componentes React reutilizáveis (ex: cards, filtros, headers)
+- **`src/hooks/`** — Custom React Hooks para lógica reutilizável
+- **`src/lib/`** — Funções utilitárias, integrações com APIs, helpers TypeScript
+- **`public/`** — Imagens, ícones e outros recursos estáticos servidos na raiz
 
 ## 📚 Documentação
 
 - [Guia de Contribuição](./CONTRIBUTING.md) — ajude-nos a melhorar
 - [ReliefWeb API Docs](https://reliefweb.int/api) — documentação da fonte de dados
-- [Cloudflare Workers Docs](https://developers.cloudflare.com/workers/) — learn more about Workers
+- [Cloudflare Workers Docs](https://developers.cloudflare.com/workers/) — saiba mais sobre Workers
+- [Next.js App Router](https://nextjs.org/docs/app) — documentação oficial Next.js
 
 ## 🤝 Contribuições
 
@@ -146,7 +162,7 @@ Este é um **projeto open-source**. Contribuições são bem-vindas!
 
 ## 📝 Licença
 
-[Escolha a licença apropriada — p.ex. MIT, Apache 2.0, etc.]
+[MIT License](./LICENSE) — Veja o ficheiro LICENSE para detalhes.
 
 ## 🔗 Links Úteis
 
@@ -154,6 +170,7 @@ Este é um **projeto open-source**. Contribuições são bem-vindas!
 - ☁️ [Cloudflare](https://www.cloudflare.com/)
 - ⚛️ [Next.js](https://nextjs.org/)
 - 🟦 [TypeScript](https://www.typescriptlang.org/)
+- 🧹 [Biome](https://biomejs.dev/) — Linter e formatter
 
 ## 👨‍💻 Autor
 
@@ -162,4 +179,3 @@ Este é um **projeto open-source**. Contribuições são bem-vindas!
 ---
 
 **#Cloudflare** #CloudflareWorkers #NextJS #HealthData #Africa #SideProject #DevLearning
-
